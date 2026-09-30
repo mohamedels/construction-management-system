@@ -14,8 +14,8 @@ class MainApplication(tk.Tk):
         self.geometry("1400x900")
         self.minsize(1200, 700)
         self.configure(bg="#F3F6FA")
-        self._build_ui()
         init_db()
+        self._build_ui()
 
     def _build_ui(self):
         self.sidebar = tk.Frame(self, width=250, bg="#1F2D3D")
@@ -84,13 +84,17 @@ class MainApplication(tk.Tk):
             ("إجمالي عربيات المياه", summary["water_total"], "#7C3AED"),
         ]
 
+        # استخدم Frame مع Grid فقط
+        cards_frame = tk.Frame(frame, bg="#F3F6FA")
+        cards_frame.pack(fill="both", expand=True, pady=20)
+
         for i, (label, value, color) in enumerate(cards):
-            card = tk.Frame(frame, bg="#FFFFFF", padx=20, pady=20, bd=1, relief="solid")
+            card = tk.Frame(cards_frame, bg="#FFFFFF", padx=20, pady=20, bd=1, relief="solid")
             card.grid(row=i // 4, column=i % 4, padx=12, pady=12, sticky="nsew")
             tk.Label(card, text=label, font=("Tahoma", 11), bg="#FFFFFF", fg="#555555").pack(anchor="w")
             tk.Label(card, text=f"{value:,.2f}", font=("Tahoma", 20, "bold"), bg="#FFFFFF", fg=color).pack(anchor="w", pady=(10, 0))
 
-        frame.grid_columnconfigure((0, 1, 2, 3), weight=1)
+        cards_frame.grid_columnconfigure((0, 1, 2, 3), weight=1)
 
     def show_employees(self):
         self.clear_content()
